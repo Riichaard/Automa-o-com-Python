@@ -1,5 +1,5 @@
 # Automa-o-com-Python
-Automatização de indicadores diários 
+
 import webbrowser
 import pyautogui
 import time
