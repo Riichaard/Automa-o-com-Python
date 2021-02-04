@@ -1,0 +1,136 @@
+Sub Macro4()
+'
+' Macro4 Macro
+'
+
+'
+    Sheets("RE155").Select
+    Range("A1").Select
+    With ActiveSheet.QueryTables.Add(Connection:= _
+        "TEXT;C:\PRODUCAO\ANALISEACIONAMENTO\ESTOQUE\RE155.txt" _
+        , Destination:=Range("$A$1"))
+        
+        .Name = "RE155 - CARTÕES 12.01_1"
+        .FieldNames = True
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = True
+        .RefreshOnFileOpen = False
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .TextFilePromptOnRefresh = False
+        .TextFilePlatform = 1252
+        .TextFileStartRow = 1
+        .TextFileParseType = xlDelimited
+        .TextFileTextQualifier = xlTextQualifierDoubleQuote
+        .TextFileConsecutiveDelimiter = False
+        .TextFileTabDelimiter = False
+        .TextFileSemicolonDelimiter = True
+        .TextFileCommaDelimiter = False
+        .TextFileSpaceDelimiter = False
+        .TextFileColumnDataTypes = Array(1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, _
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        .TextFileTrailingMinusNumbers = True
+        .Refresh BackgroundQuery:=False
+    End With
+
+
+'
+' bd Macro
+'
+
+'
+    Sheets("BD").Select
+    With ActiveSheet.QueryTables.Add(Connection:= _
+        "TEXT;C:\PRODUCAO\ANALISEACIONAMENTO\'BD.txt", Destination:=Range("$A$1"))
+        
+        .Name = "'BD"
+        .FieldNames = True
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = True
+        .RefreshOnFileOpen = False
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .TextFilePromptOnRefresh = False
+        .TextFilePlatform = 850
+        .TextFileStartRow = 1
+        .TextFileParseType = xlDelimited
+        .TextFileTextQualifier = xlTextQualifierDoubleQuote
+        .TextFileConsecutiveDelimiter = False
+        .TextFileTabDelimiter = False
+        .TextFileSemicolonDelimiter = True
+        .TextFileCommaDelimiter = False
+        .TextFileSpaceDelimiter = False
+        .TextFileColumnDataTypes = Array(1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        .TextFileTrailingMinusNumbers = True
+        .Refresh BackgroundQuery:=False
+    End With
+    '
+' abrir_coluna Macro
+'
+
+    Sheets("RE155").Select
+    Columns("C:C").Select
+    Range("C5").Activate
+    Selection.Insert Shift:=xlToRight
+    Range("C1").Select
+    ActiveCell.FormulaR1C1 = "acionado"
+    Range("C2").Select
+
+
+'
+' procv2 Macro
+'
+
+    Sheets("RE155").Select
+    ActiveCell.FormulaR1C1 = "=PROCV(B:B;BD!D:D;1;0"
+    Columns("C:C").Select
+    Range("C2").Activate
+    Selection.NumberFormat = "General"
+    ActiveCell.FormulaR1C1 = "=VLOOKUP(C[-1],BD!C[1],1,0)"
+    Range("C2").Select
+    Selection.AutoFill Destination:=Range("C2:C40875")
+    Range("C2:C40875").Select
+    Range("D13").Select
+    Sheets("TABELADINAMICA").Select
+    
+'
+' Macro8 Macro
+'
+
+'
+    Sheets("RE155").Select
+    
+    Range("E9").Select
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        "RE155!R1C1:R39105C43", Version:=6).CreatePivotTable TableDestination:= _
+        "TABELADINAMICA!R4C2", TableName:="Tabela dinâmica2", DefaultVersion:=6
+    Sheets("TABELADINAMICA").Select
+    Cells(4, 2).Select
+    With ActiveSheet.PivotTables("Tabela dinâmica2").PivotFields("tpn")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("Tabela dinâmica2").AddDataField ActiveSheet. _
+        PivotTables("Tabela dinâmica2").PivotFields("contrato_str"), _
+        "Contagem de contrato_str", xlCount
+    With ActiveSheet.PivotTables("Tabela dinâmica2").PivotFields("acionado")
+        .Orientation = xlPageField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("Tabela dinâmica2").PivotFields("status_contrato")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("Tabela dinâmica2").PivotFields("acionado"). _
+        ClearAllFilters
+    ActiveSheet.PivotTables("Tabela dinâmica2").PivotFields("acionado"). _
+        CurrentPage = "#N/A"
+End Sub
