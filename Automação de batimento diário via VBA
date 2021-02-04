@@ -10,7 +10,7 @@ Sub Macro4()
         "TEXT;C:\PRODUCAO\ANALISEACIONAMENTO\ESTOQUE\RE155.txt" _
         , Destination:=Range("$A$1"))
         
-        .Name = "RE155 - CARTÕES 12.01_1"
+        .Name = "RE155.txt"
         .FieldNames = True
         .RowNumbers = False
         .FillAdjacentFormulas = False
